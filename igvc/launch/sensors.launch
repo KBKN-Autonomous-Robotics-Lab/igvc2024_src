@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <launch>
     <!-- Arguments -->
-    <arg name="model"            default="$(find xacro)/xacro '$(find igvc2023)/urdf/orange.xacro'" />
-    <arg name="calibration"      default="$(find igvc2023)/params/VLP16db.yaml"/>
+    <arg name="model"            default="$(find xacro)/xacro '$(find igvc)/urdf/orange.xacro'" />
+    <arg name="calibration"      default="$(find igvc)/params/VLP16db.yaml"/>
     <arg name="scan_dev"         default="/dev/sensors/hokuyo_urg"/>
     <arg name="imu_dev"          default="/dev/sensors/imu"/>
     <arg name="camera_dev"       default="/dev/sensors/insta360_air"/>
@@ -84,7 +84,7 @@
     
     
     <!-- Ground segmentation, Pointcloud to laserscan, Merge scans -->
-    <include file="$(find igvc2023)/launch/segmentation.launch"/>
+    <include file="$(find igvc)/launch/segmentation.launch"/>
     
     <!-- Start camera -->
     <node pkg="cv_camera" type="cv_camera_node" name="cv_camera">
@@ -100,14 +100,14 @@
     
     <!-- Sensor fusion 
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
-        <rosparam command="load" file="$(find igvc2023)/config/ekf.yaml" />
+        <rosparam command="load" file="$(find igvc)/config/ekf.yaml" />
         <remap from="odom0" to="/odom" />
         <remap from="odom1" to="/odometry/gps" />
         <remap from="imu0" to="/imu" />
     </node>
     
     <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" clear_params="true" output="screen">
-        <rosparam command="load" file="$(find igvc2023)/config/navsatekf.yaml" />
+        <rosparam command="load" file="$(find igvc)/config/navsatekf.yaml" />
         <remap from="/imu/data" to="/imu" />
         <remap from="/gps/fix" to="/fix" />
     </node>
