@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>igvc2023</name>
+  <name>igvc</name>
   <version>0.0.1</version>
-  <description>The igvc2023 package</description>
-  <maintainer email="KBKN@todo.todo">ubuntu</maintainer>
+  <description>This is a package for igvc</description>
+  <maintainer email="shun.saito.6t@stu.hosei.ac.jp">shunsugar</maintainer>
   <license>Apache 2.0</license>
   <buildtool_depend>catkin</buildtool_depend>
   <exec_depend>gmapping</exec_depend>
