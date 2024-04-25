@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#IGVC2023-src dependency
+#igvc2024_src dependency
 python3 -m pip install --user --upgrade --no-cache-dir --no-warn-script-location \
-pymodbus \
+pymodbus==2.5.3 \
 numpy-quaternion \
 ruamel.yaml \
 Pillow
