@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Arguments -->
+    <arg name="model"            default="$(find xacro)/xacro '$(find igvc)/urdf/orange.xacro'" />
+    <arg name="LED_dev"          default="/dev/sensors/LED"/>
+    <arg name="gps_dev"          default="/dev/sensors/CLAS"/>
+    <arg name="gps1_dev"         default="/dev/sensors/GNSSbase"/>
+    <arg name="gps2_dev"         default="/dev/sensors/GNSSrover"/>
+    <arg name="use_ekf"          default="true"/>
+    
+    <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+    <param name="robot_description" command="$(arg model)"/>
+    
+    <!-- Convert joint states to TF transforms for rviz, etc -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+    
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="use_gui" value="true"/>
+        <param name="rate"    value="50"/>
+    </node>
+    
+    <!-- Node to setting up Arduino serial communication for LEDs -->
+    <node pkg="rosserial_python" type="serial_node.py" name="serial_node_LED">
+        <param name="port" value="$(arg LED_dev)"/>
+        <param name="baud" value="115200"/>
+    </node>
+    
+    <!-- Use Mid360 -->
+    <include file="$(find livox_ros_driver2)/launch/msg_MID360.launch"/>
+    
+    <!-- Convert message /livox/lidar to /livox/points -->
+    <node pkg="livox_to_pointcloud2" type="livox_to_pointcloud2_node" name="livox_to_pointcloud2">
+       
+    <!-- Ground segmentation, Pointcloud to laserscan, Merge scans -->
+    <include file="$(find igvc)/launch/mid360_segmentation.launch"/>
+    
+    <!-- Sensor fusion 
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true" output="screen">
+        <rosparam command="load" file="$(find igvc)/config/ekf.yaml" />
+        <remap from="odom0" to="/odom" />
+        <remap from="odom1" to="/odometry/gps" />
+        <remap from="imu0" to="/imu" />
+    </node>
+    
+    <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" clear_params="true" output="screen">
+        <rosparam command="load" file="$(find igvc)/config/navsatekf.yaml" />
+        <remap from="/imu/data" to="/imu" />
+        <remap from="/gps/fix" to="/fix" />
+    </node>
+    
+    <node pkg="nmea_navsat_driver" type="nmea_serial_driver" name="navsat" respawn="true">
+        <param name="port" value="$(arg gps_dev)"/>
+        <param name="baud" value="19200"/>
+    </node>
+    -->
+    
+    <node name="combine_dr_measurements" pkg="robot_pose_ekf" type="robot_pose_ekf">
+        <remap from="odom"         to="/odom"/>
+        <remap from="imu_data"     to="/livox/imu"/>
+        <param name="freq"                 value="30.0"/>
+        <param name="sensor_timeout"       value="1.0"/>
+        <param name="publish_tf"           value="true"/>
+        <param name="odom_used"            value="true"/>
+        <param name="imu_used"             value="true"/>
+        <param name="vo_used"              value="false"/>
+        <param name="output_frame"         value="odom"/>
+        <param name="base_footprint_frame" value="base_footprint"/>
+    </node>
+    
+</launch>
