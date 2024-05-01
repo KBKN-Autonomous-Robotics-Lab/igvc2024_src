@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="sensor_velodyne" xmlns:xacro="http://ros.org/wiki/xacro"
+<robot name="sensor_livox" xmlns:xacro="http://ros.org/wiki/xacro"
                               xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
                               xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
 

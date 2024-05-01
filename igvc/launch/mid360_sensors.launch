@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!-- Arguments -->
-    <arg name="model"            default="$(find xacro)/xacro '$(find igvc)/urdf/orange.xacro'" />
+    <arg name="model"            default="$(find xacro)/xacro '$(find igvc)/urdf/orange2024.xacro'" />
     <arg name="LED_dev"          default="/dev/sensors/LED"/>
     <arg name="gps_dev"          default="/dev/sensors/CLAS"/>
     <arg name="gps1_dev"         default="/dev/sensors/GNSSbase"/>
