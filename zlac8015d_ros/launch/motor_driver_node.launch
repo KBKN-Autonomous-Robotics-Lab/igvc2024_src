@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-　<!-- Arguments -->
+  <!-- Arguments -->
   <arg name="port"                default="/dev/ttyUSB0"/>
   <!--# Control mode
       # 1: relative position control mode
